@@ -1,0 +1,18 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+h2{
+    text-align: center;
+    margin-bottom:30px;
+}
+.admin-menu-container{
+    max-width: 420px;
+    margin: 0 auto;
+    margin-top: 40px;
+    font-family: "Nanum Gothic";
+    margin-bottom:50px;
+}
+
+Button{
+    margin-top:10px;
+    font-size:1rem;
+}

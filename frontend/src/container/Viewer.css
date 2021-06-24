@@ -1,0 +1,58 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+
+.wrap_viewer{
+    margin: 0 auto;
+    width:1000px;
+    height:100%;
+    text-align:center;
+}
+
+.top_viewer{
+    font-size:1.2rem;
+    height:140px;
+    background-color:#8FBC8F;
+    padding:60px;
+    margin-bottom:30px;
+    border-bottom: 1px solid lightgray;
+}
+
+.wrap_images{
+    text-align: center;
+}
+img{
+    width: 100%;
+    object-fit: contain;
+}
+
+
+.comment_container{
+    width:800px;
+    margin: 0 auto;
+    padding-bottom:100px;
+    
+}
+
+.rating_container{
+    margin-bottom:20px;
+}
+
+.rating_container Button{
+    margin-left : 10px;
+}
+.editForm-container{
+    margin-top:30px;
+}
+
+.avgRate{
+    font-family: "Nanum Gothic";
+    font-size:1.2rem;
+    padding :10px;
+    
+}
+
+.avgStar{
+    margin-right:500px;
+    float:left;
+    margin-bottom: 100px;
+}
