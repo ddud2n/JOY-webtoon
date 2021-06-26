@@ -166,20 +166,7 @@ class Profile extends Component {
 
     chargeCash(){
         chargeCash(parseInt(this.state.cash))
-            .then(response => {
-                console.log(this.state.cash)
-                chargeCash_user(parseInt(this.state.cash))
-                    notification.success({
-                        message: 'JOY Toon',
-                        description: this.state.cash +"캐시를 충전했습니다."
-                    });
-            }
-            ).catch(error => {
-            notification.success({
-                message: 'JOY Toon',
-                description: "캐시충전에 실패했습니다."
-            });
-        })
+        chargeCash_user(parseInt(this.state.cash))
     }
 
     componentDidMount() {
