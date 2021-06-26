@@ -2,10 +2,9 @@ package com.example.apigatewayservice.filter;
 
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.http.HttpHeaders;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.env.Environment;
@@ -13,16 +12,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Component
 @Slf4j
-public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<AuthorizationHeaderFilter.Config> {
+public class AuthorAdminCheckHeaderFilter extends AbstractGatewayFilterFactory<AuthorAdminCheckHeaderFilter.Config> {
 
     Environment env;
-    public AuthorizationHeaderFilter(Environment env){
+    public AuthorAdminCheckHeaderFilter(Environment env){
         super(Config.class);
         this.env = env;
     }
@@ -45,8 +43,8 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             String authorizationHeader = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
             String jwt = authorizationHeader.substring(7, authorizationHeader.length());
 
-            if(!isJwtValid(jwt)){
-                return onError(exchange, "JWT token is not valid", HttpStatus.UNAUTHORIZED);
+            if(!isJwtValid(jwt)){ //jwt admin author 확인
+                return onError(exchange, "Not Author properities", HttpStatus.UNAUTHORIZED);
             }
 
             return chain.filter(exchange);
@@ -64,12 +62,13 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 
     private boolean isJwtValid(String jwt){
         boolean returnValue = true;
-        String subject = null;
         String key = env.getProperty("token.secret");
+        String userAuth = null;
         try {
             Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(jwt).getBody();
             Long userId = Long.parseLong(claims.get("userId").toString());
-            subject = userId.toString();
+            userAuth = claims.get("userAuth").toString();
+            System.out.println(userAuth);
         } catch (
             SignatureException ex) {
                 logger.error("Invalid JWT signature");
@@ -84,7 +83,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             } catch (IllegalArgumentException ex) {
                 logger.error("JWT claims string is empty.");
             }
-        if(subject.isEmpty()){returnValue= false;}
+        if(userAuth.isEmpty() || !(userAuth.contains("ROLE_AUTHOR")||userAuth.contains("ROLE_ADMIN")) ){returnValue= false;}
         return returnValue;
     }
 

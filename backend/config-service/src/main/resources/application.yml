@@ -4,9 +4,20 @@ server:
 spring:
   application:
     name: config-server
+  rabbitmq:
+    host: 127.0.0.1
+    post: 5672
+    username: guest
+    password: guest
   cloud:
     config:
       server:
         git:
           uri: https://github.com/sujin0970/spring-cloud-config.git
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, busrefresh
 

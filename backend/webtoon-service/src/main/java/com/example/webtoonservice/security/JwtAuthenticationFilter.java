@@ -1,5 +1,6 @@
 package com.example.webtoonservice.security;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 
@@ -23,12 +25,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTokenProvider tokenProvider;
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
-    //Request로 들어오는 Jwt Token의 유효성 검증(jwtTokenProvider.validateToken)하는 filter를 
+    //Request로 들어오는 Jwt Token의 유효성 검증(jwtTokenProvider.validateToken)하는 filter를
     //filterChain에 등록
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -36,22 +35,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String jwt = getJwtFromRequest(request);
 
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-                Long userId = tokenProvider.getUserIdFromJWT(jwt); //jwt토큰에서 회원구별 정보(id) 추출 
-
-                UserDetails userDetails = customUserDetailsService.loadUserById(userId); // 추출한 id로 detail 가져오기 
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()); // 해당 id에 대한 권한 가져오기
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                SecurityContextHolder.getContext().setAuthentication(authentication); //인증정보 spring security’s context에 set
+                Long userId = tokenProvider.getUserIdFromJWT(jwt); //jwt토큰에서 회원구별 정보(id) 추출
+                HttpSession session = request.getSession();
+                session.setAttribute("token", jwt); // 유저 jwt 세션에 저장
+                session.setMaxInactiveInterval(30*5);
             }
         } catch (Exception ex) {
             logger.error("Could not set user authentication in security context", ex);
         }
-
         filterChain.doFilter(request, response);
     }
 
-    private String getJwtFromRequest(HttpServletRequest request) { // 요청 받기
+    public String getJwtFromRequest(HttpServletRequest request) { // 요청 받기
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7, bearerToken.length());

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import NotFound from '../../common/NotFound';
 import ServerError from '../../common/ServerError';
 import LoadingIndicator  from '../../common/LoadingIndicator';
-import {Avatar, Table, Button, Form, Input} from 'antd';
+import {Avatar, Table, Button, Form, Input, notification} from 'antd';
 import { getAvatarColor } from '../../util/Colors';
-import { getUserProfile, chargeCash, getCashRecord, CheckRentIng } from '../../util/APIUtils';
+import {getUserProfile, chargeCash, getCashRecord, CheckRentIng, chargeCash_user} from '../../util/APIUtils';
 import {fetchFav, deleteFavById} from '../../util/APIAdmin';
 import {Link, withRouter} from "react-router-dom";
 import "./Profile.css";
@@ -166,6 +166,20 @@ class Profile extends Component {
 
     chargeCash(){
         chargeCash(parseInt(this.state.cash))
+            .then(response => {
+                console.log(this.state.cash)
+                chargeCash_user(parseInt(this.state.cash))
+                    notification.success({
+                        message: 'JOY Toon',
+                        description: this.state.cash +"캐시를 충전했습니다."
+                    });
+            }
+            ).catch(error => {
+            notification.success({
+                message: 'JOY Toon',
+                description: "캐시충전에 실패했습니다."
+            });
+        })
     }
 
     componentDidMount() {

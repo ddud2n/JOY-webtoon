@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-public class JwtTokenProvider { //Jwt 토큰 생성 및 유효성 검증 컴포넌트 
+public class JwtTokenProvider { //Jwt 토큰 생성 및 유효성 검증 컴포넌트
 
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
@@ -18,23 +18,8 @@ public class JwtTokenProvider { //Jwt 토큰 생성 및 유효성 검증 컴포�
     private String jwtSecret;
 
     @Value("${app.jwtExpirationInMs}") //유효기간
-    private int jwtExpirationInMs; 
+    private int jwtExpirationInMs;
 
-    //Jwt 토큰 생성
-    public String generateToken(Authentication authentication) {
-
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + jwtExpirationInMs); //만기 날짜
-
-        return Jwts.builder()
-                .setSubject(Long.toString(userPrincipal.getId())) //데이터
-                .setIssuedAt(new Date()) //토큰 발행 일자
-                .setExpiration(expiryDate) //만기 기간
-                .signWith(SignatureAlgorithm.HS512, jwtSecret) //암호화 알고리즘, secret값 세팅
-                .compact();
-    }
 
     // Jwt 토큰에서 회원구별 정보 추출
     public Long getUserIdFromJWT(String token) {
@@ -43,7 +28,7 @@ public class JwtTokenProvider { //Jwt 토큰 생성 및 유효성 검증 컴포�
                 .parseClaimsJws(token)
                 .getBody();
 
-        return Long.parseLong(claims.getSubject());
+        return Long.parseLong(claims.get("userId").toString());
     }
 
     // Jwt 토큰의 유효성 확인
@@ -64,4 +49,5 @@ public class JwtTokenProvider { //Jwt 토큰 생성 및 유효성 검증 컴포�
         }
         return false;
     }
+
 }

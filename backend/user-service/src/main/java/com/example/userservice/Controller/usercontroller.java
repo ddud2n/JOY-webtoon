@@ -3,6 +3,7 @@ package com.example.userservice.Controller;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -150,7 +151,25 @@ public class usercontroller {
     }
 
 
+    //캐시 충전
+    @PostMapping("/chargeCash")
+    public void chargeCash(@Valid @RequestBody Map<String, Long> stringLongMap, @CurrentSecurityContext(expression="authentication.name") String username){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+        Long cash = user.getCash();
+        user.setCash(cash + stringLongMap.get("cash_amount"));
+        userRepository.save(user);
+    }
 
+    //대여권 구매
+    @GetMapping("/rentToon")
+    public void rentToon(@Valid @CurrentSecurityContext(expression="authentication.name") String username){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+        Long cash = user.getCash();
+        user.setCash(cash - 10);
+        userRepository.save(user);
+    }
 
 /*
     http://localhost:8081/user-service/checkUsernameAvailability?username=admin

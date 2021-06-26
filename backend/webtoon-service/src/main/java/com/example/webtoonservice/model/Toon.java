@@ -29,10 +29,7 @@ public class Toon extends DateAudit {
 
     private String genre;
 
-    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name="user_no")
-    private User user;
+    private Long user_no;
     
     @JsonManagedReference // 순환참조를 막기위한 부모클래스에 참조하는 어노테이션
     @OneToOne(fetch=FetchType.LAZY,
@@ -60,12 +57,12 @@ public class Toon extends DateAudit {
 
     }
 
-    public Toon(String title, String artist, String day, String genre, User user){
+    public Toon(String title, String artist, String day, String genre, Long user){
         this.title = title;
         this.artist = artist;
         this.day = day;
         this.genre = genre;
-        this.user = user;
+        this.user_no = user;
     }
 
 }

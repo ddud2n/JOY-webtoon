@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class JwtTokenProvider { //Jwt 토큰 생성 및 유효성 검증 컴포넌트 
@@ -29,7 +31,8 @@ public class JwtTokenProvider { //Jwt 토큰 생성 및 유효성 검증 컴포�
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs); //만기 날짜
 
         return Jwts.builder()
-                .setSubject(Long.toString(userPrincipal.getId())) //데이터
+                .claim("userId", Long.toString(userPrincipal.getId()))
+                .claim("userAuth", userPrincipal.getAuthorities()) //데이터
                 .setIssuedAt(new Date()) //토큰 발행 일자
                 .setExpiration(expiryDate) //만기 기간
                 .signWith(SignatureAlgorithm.HS512, jwtSecret) //암호화 알고리즘, secret값 세팅
@@ -43,7 +46,7 @@ public class JwtTokenProvider { //Jwt 토큰 생성 및 유효성 검증 컴포�
                 .parseClaimsJws(token)
                 .getBody();
 
-        return Long.parseLong(claims.getSubject());
+        return Long.parseLong(claims.get("userId").toString());
     }
 
     // Jwt 토큰의 유효성 확인

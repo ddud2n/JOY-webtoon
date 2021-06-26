@@ -54,6 +54,9 @@ public class User extends DateAudit {
     @ColumnDefault("0")
     private Long cash;
 
+    @Column(name = "Klayaddress")
+    private String klayaddress;
+
 
     @ManyToMany(fetch = FetchType.LAZY) //지연로딩
     @JoinTable(name = "user_roles",

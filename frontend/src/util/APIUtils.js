@@ -121,6 +121,20 @@ export function chargeCash(cash){
     });
 }
 
+// 캐시충전-캐시수정
+export function chargeCash_user(cash){
+    var data = JSON.stringify(
+        { "cash_amount" : cash
+        }
+    )
+    return request({
+        contentType: "application/json",
+        url:  "/user-service/chargeCash",
+        method: 'POST',
+        body: data
+    });
+}
+
 
 
 // 대여권 조회
@@ -157,7 +171,7 @@ export function checkEpiRent(id){
 }
 
 
-// 대여권구매
+// 대여권구매-대여권기록
 export function rentEpisode(epiid, epiTitle, webtoonTitle){
     var data =JSON.stringify(
         { "change_amount" : "10",
@@ -175,6 +189,13 @@ export function rentEpisode(epiid, epiTitle, webtoonTitle){
 }
 
 
+// 대여권구매-캐시수정
+export function rentToon(){
+    return request({
+        url : "/user-service/rentToon",
+        method: 'GET'
+    });
+}
 
 
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from "react-router-dom";
 import "./EpisodeList.css";
-import { checkEpiRent, checkCash, rentEpisode } from '../util/APIUtils';
+import {checkEpiRent, checkCash, rentEpisode, rentToon} from '../util/APIUtils';
 import {Button, notification} from "antd";
 import {withRouter} from 'react-router-dom';
 import {fetchEditEpi} from '../util/APIAdmin'
@@ -64,6 +64,7 @@ class EpisodeList extends Component {
                                         var toontitle = result.webtoonTitle
                                         rentEpisode(epiid, epititle, toontitle)
                                             .then(res => {
+                                                    rentToon()
                                                     this.props.history.push('/viewer/'+epiid)
                                                 }
                                             )

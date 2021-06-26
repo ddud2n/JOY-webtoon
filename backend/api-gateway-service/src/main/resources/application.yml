@@ -13,11 +13,16 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans, httptrace
+        include: refresh, health, beans, httptrace, busrefresh
 
 spring:
   application:
     name: apigateway-service
+  rabbitmq:
+    host: 127.0.0.1
+    post: 5672
+    username: guest
+    password: guest
   cloud:
     gateway:
       globalcors:
@@ -40,6 +45,10 @@ spring:
               - DELET
         add-to-simple-url-handler-mapping: true
       routes:
+        - id: NFT-node-service
+          uri: lb://NFT-NODE-SERVICE
+          predicates:
+            - Path=/NFT-node-service/**
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
@@ -120,18 +129,32 @@ spring:
             - Path=/user-service/deleteUser/**
           filters:
             - AuthorizationHeaderFilter
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/chargeCash
+          filters:
+            - AuthorizationHeaderFilter
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/rentToon
+          filters:
+            - AuthorizationHeaderFilter
         - id: webtoon-service
           uri: lb://WEBTOON-SERVICE
           predicates:
             - Path=/webtoon-service/newAdd
           filters:
             - AuthorizationHeaderFilter
+            - AuthorAdminCheckHeaderFilter
         - id: webtoon-service
           uri: lb://WEBTOON-SERVICE
           predicates:
             - Path=/webtoon-service/uploads
           filters:
             - AuthorizationHeaderFilter
+            - AuthorAdminCheckHeaderFilter
         - id: webtoon-service
           uri: lb://WEBTOON-SERVICE
           predicates:
@@ -142,6 +165,7 @@ spring:
             - Path=/webtoon-service/getToon/me
           filters:
             - AuthorizationHeaderFilter
+            - AuthorAdminCheckHeaderFilter
         - id: webtoon-service
           uri: lb://WEBTOON-SERVICE
           predicates:
@@ -158,12 +182,14 @@ spring:
             - Path=/webtoon-service/deleteToonThumbnail/**
           filters:
             - AuthorizationHeaderFilter
+            - AuthorAdminCheckHeaderFilter
         - id: webtoon-service
           uri: lb://WEBTOON-SERVICE
           predicates:
             - Path=/webtoon-service/deleteToon/**
           filters:
             - AuthorizationHeaderFilter
+            - AuthorAdminCheckHeaderFilter
         - id: webtoon-service
           uri: lb://WEBTOON-SERVICE
           predicates:
@@ -173,27 +199,38 @@ spring:
         - id: webtoon-service
           uri: lb://WEBTOON-SERVICE
           predicates:
+            - Path=/webtoon-service/uploadEditToon/**
+          filters:
+            - AuthorizationHeaderFilter
+            - AuthorAdminCheckHeaderFilter
+        - id: webtoon-service
+          uri: lb://WEBTOON-SERVICE
+          predicates:
             - Path=/webtoon-service/uploadEditToonExceptFile/**
           filters:
             - AuthorizationHeaderFilter
+            - AuthorAdminCheckHeaderFilter
         - id: webtoon-service
           uri: lb://WEBTOON-SERVICE
           predicates:
             - Path=/webtoon-service/newEpi
           filters:
             - AuthorizationHeaderFilter
+            - AuthorAdminCheckHeaderFilter
         - id: webtoon-service
           uri: lb://WEBTOON-SERVICE
           predicates:
             - Path=/webtoon-service/thumbnails
           filters:
             - AuthorizationHeaderFilter
+            - AuthorAdminCheckHeaderFilter
         - id: webtoon-service
           uri: lb://WEBTOON-SERVICE
           predicates:
             - Path=/webtoon-service/toons
           filters:
             - AuthorizationHeaderFilter
+            - AuthorAdminCheckHeaderFilter
         - id: webtoon-service
           uri: lb://WEBTOON-SERVICE
           predicates:
@@ -212,6 +249,7 @@ spring:
             - Path=/webtoon-service/getToonIdAndName/me
           filters:
             - AuthorizationHeaderFilter
+            - AuthorAdminCheckHeaderFilter
         - id: webtoon-service
           uri: lb://WEBTOON-SERVICE
           predicates:
@@ -232,18 +270,21 @@ spring:
             - Path=/webtoon-service/deleteEpi/**
           filters:
             - AuthorizationHeaderFilter
+            - AuthorAdminCheckHeaderFilter
         - id: webtoon-service
           uri: lb://WEBTOON-SERVICE
           predicates:
             - Path=/webtoon-service/deleteEpiThumbnail/**
           filters:
             - AuthorizationHeaderFilter
+            - AuthorAdminCheckHeaderFilter
         - id: webtoon-service
           uri: lb://WEBTOON-SERVICE
           predicates:
             - Path=/webtoon-service/deleteEpiToon/**
           filters:
             - AuthorizationHeaderFilter
+            - AuthorAdminCheckHeaderFilter
         - id: webtoon-service
           uri: lb://WEBTOON-SERVICE
           predicates:
@@ -256,18 +297,28 @@ spring:
             - Path=/webtoon-service/uploadEditEpi/**
           filters:
             - AuthorizationHeaderFilter
+            - AuthorAdminCheckHeaderFilter
         - id: webtoon-service
           uri: lb://WEBTOON-SERVICE
           predicates:
             - Path=/webtoon-service/uploadEditEpiExceptTaM/**
           filters:
             - AuthorizationHeaderFilter
+            - AuthorAdminCheckHeaderFilter
         - id: webtoon-service
           uri: lb://WEBTOON-SERVICE
           predicates:
             - Path=/webtoon-service/uploadEditEpiExceptT/**
           filters:
             - AuthorizationHeaderFilter
+            - AuthorAdminCheckHeaderFilter
+        - id: webtoon-service
+          uri: lb://WEBTOON-SERVICE
+          predicates:
+            - Path=/webtoon-service/uploadEditEpiExceptM/**
+          filters:
+            - AuthorizationHeaderFilter
+            - AuthorAdminCheckHeaderFilter
         - id: webtoon-service
           uri: lb://WEBTOON-SERVICE
           predicates:

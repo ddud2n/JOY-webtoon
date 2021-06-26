@@ -18,7 +18,7 @@ public class JwtTokenProvider { //Jwt 토큰 생성 및 유효성 검증 컴포�
     private String jwtSecret;
 
     @Value("${app.jwtExpirationInMs}") //유효기간
-    private int jwtExpirationInMs; 
+    private int jwtExpirationInMs;
 
 
     // Jwt 토큰에서 회원구별 정보 추출
@@ -28,7 +28,7 @@ public class JwtTokenProvider { //Jwt 토큰 생성 및 유효성 검증 컴포�
                 .parseClaimsJws(token)
                 .getBody();
 
-        return Long.parseLong(claims.getSubject());
+        return Long.parseLong(claims.get("userId").toString());
     }
 
     // Jwt 토큰의 유효성 확인

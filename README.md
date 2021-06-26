@@ -123,7 +123,16 @@
    <br> INSERT IGNORE INTO roles(name) VALUES('ROLE_AUTHOR');
    <br> INSERT IGNORE INTO roles(name) VALUES('ROLE_ADMIN');
    <br> INSERT IGNORE INTO roles(name) VALUES('ROLE_USER');
-
+   
+   
+<br> <br> 
+[💚NFT-node-server 구동💚]<br>
+7) $ cd backend\NFT-node-server <br>
+8) $ npm install<br>
+9) $ npm start<br>
+10) localhost:8000/NFT-node-service 이동 시, Hello/ 출력<br>
+11) ⭐ NFT-node-server 의 api 는 /NFT-node-service/\** 형식만을 지원한다. 자세한 사항은 backend\NFT-node-server\router\main.js 참고<br>
+12) Node는 Express 패키지로 서버를 구성했음<br>
 
 
 <br><br>
