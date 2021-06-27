@@ -54,7 +54,8 @@ class Profile extends Component {
 "createdAt":"2021-06-22T19:59:01.964",
 "toonname":"",
 "epiname":"",
-"epino":""}
+"epino":""
+}
 ]
     * */
 
@@ -84,23 +85,7 @@ class Profile extends Component {
                 console.log(error);
             });
     }
-/*
-[{"createdAt":"2021-06-03T20:57:47Z",
-"updatedAt":"2021-06-03T20:57:47Z",
-"crno":1,
-"changeAmount":10,
-"toonNumber":null,
-"episodeNumber":null,
-"contents":[{"id":2,"name":"CHARGE"}]},
 
-{"createdAt":"2021-06-03T21:50:41Z",
-"updatedAt":"2021-06-03T21:50:41Z",
-"crno":2,
-"changeAmount":12,
-"toonNumber":null,
-"episodeNumber":null,
-"contents":[{"id":2,"name":"CHARGE"}]}]
- */
 
 
     loadCashRecord(){
