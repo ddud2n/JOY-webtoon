@@ -33,38 +33,30 @@
 <br/>
 
 
+
 # 추가예정 구현 기술
-- Kafka
-- ELK
-- 도커배포
-- 쿠버네티스 + Jenkins
-- REDIS + JWT
-- Naver Cloud Storage 파일 서버 연동
-- Hadoop
-- Spark
-- Hive
-- JMeter
+
+<img src = https://github.com/sujin0970/joy_test/blob/master/%EC%BA%A1%EC%B2%98.PNG>
+<img src = https://github.com/sujin0970/joy_test/blob/master/%EC%BA%A1%EC%B2%981.PNG>
+
+- Kafka 데이터 동기화
+- REDIS - refresh token 캐싱
+- Zipkin + Sleuth 분산추적
+- Prometheus + Grafana 성능모니터링
+- 도커이미지 배포
+- 아코디언 적용
+- 실시간 랭킹 시스템개발 (Hadoop, Spark, Hive)
+- 개인화 웹툰추천 기능개발
+- 베스트댓글 기능개발
+- 웹툰 검색기능 
+- ELK 로그 모니터링
+- JMeter 테스팅
 
 <br/>
 <br/>
 <br/>
 
 
-# 추가예정 구현 기능
-- 인기순/별점순/거래량순 만화순위
-- 만화 추천
-- 베댓 기능 구현
-- 웹툰검색기능
-- 완결/연재 구분
-- 프로필정보 수정/ 회원탈퇴
-- 회원가입 이메일인증
-- OAuth
-
-
-
-<br/>
-<br/>
-<br/>
 
 
 
@@ -101,7 +93,7 @@
 
 1) git clone https://github.com/sujin0970/joy_test
 2) Mysql > create database joytoon;<br>
-   Mysql > create database joytoon;
+   Mysql > create database joyuser;
 3) MongoDB >  use testdb
 4) 코드수정
 <br>: backend\user-service\src\main\resourcesspring application.properties 파일에서 datasource.password수정
@@ -114,17 +106,20 @@
 - user-service
 - webtoon-service
 - cash-service 
-- 📌 위에 적힌대로 빌드-실행순서를 반드시 지켜야함
+<br>📌 위에 적힌대로 빌드-실행순서를 반드시 지켜야함
 <br> Ex)
 <br>: $ cd backend\user-service
 <br>: $ mvn package
 <br>: $ mvn spring-boot:run
 
-6) Mysql > use  cheezetoon;
+6) Mysql > use  joyuser;
    <br> INSERT IGNORE INTO roles(name) VALUES('ROLE_AUTHOR');
    <br> INSERT IGNORE INTO roles(name) VALUES('ROLE_ADMIN');
    <br> INSERT IGNORE INTO roles(name) VALUES('ROLE_USER');
-   
+
+7) React 구동<br/>
+: $ cd frontend<br>
+: $ npm install & start<br>
    
 <br> <br> 
 [💚NFT-node-server 구동💚]<br>
@@ -141,7 +136,7 @@
 [🔻주의사항🔻]
 - 페이지 회원가입 후에는 모두 유저로 저장됨. 따라서, MySQL joyuser database 에서 쿼리를 통해 직접 수정해야함
 - 몽고DB의 데이터를 확인하고 싶을 때는, mongodb> use testdb 이후 mongodb> db.cashRecord.find(); 명령어 
-- ⭐ 서버분리 및 api gateway 연결작업 
+- ⭐ 서버분리 및 api gateway 연결작업 완료( •̀ ω •́ )✧
 
 
 

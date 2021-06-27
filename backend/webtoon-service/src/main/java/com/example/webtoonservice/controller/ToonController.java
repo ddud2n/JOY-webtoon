@@ -73,9 +73,7 @@ public class ToonController {
 
     @Autowired
     private Environment env;
-
-    @Autowired
-    private RestTemplate restTemplate;
+    
 
     @Autowired
     private RentToonClient rentToonClient;
