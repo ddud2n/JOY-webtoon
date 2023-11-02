@@ -75,7 +75,7 @@ $ npm install & start
 [🔻주의사항🔻]
 - 페이지 회원가입 후에는 모두 유저로 저장됨. 따라서, MySQL joyuser database 에서 쿼리를 통해 직접 (관리자/작가/유저) 역할을 수정해야함
 - 몽고DB의 데이터를 확인하고 싶을 때는, mongodb> use testdb 이후 mongodb> db.cashRecord.find(); 명령어 실행
-- ⭐ NFT-node-server 의 api 는 /NFT-node-service/\** 형식만을 지원한다.  backend\NFT-node-server\router\main.js 참고<br>
+- NFT-node-server 의 api 는 /NFT-node-service/\** 형식만을 지원한다.  backend\NFT-node-server\router\main.js 참고<br>
 
 
 
